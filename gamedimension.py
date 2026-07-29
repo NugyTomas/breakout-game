@@ -18,8 +18,11 @@ class GameDimension:
         self.paddle_start_x = 0
         self.paddle_bottom_margin = self.window_height * 0.08
         self.paddle_start_y = (self.bottom_wall + self.paddle_bottom_margin)
-        self.paddle_width = self.scale *  0.0008
-        self.paddle_height = self.scale * 0.012
+        self.paddle_width = self.scale * 0.24
+        self.paddle_height = self.scale *  0.016
 
         self.ball_size = self.scale * 0.025
         self.ball_radius = self.ball_size / 2
+        self.ball_start_x = 0
+        self.ball_bottom_margin = self.window_height * 0.4
+        self.ball_start_y = (self.bottom_wall + self.ball_bottom_margin)
