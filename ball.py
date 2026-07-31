@@ -1,15 +1,18 @@
 from turtle import Turtle
 
 class Ball(Turtle):
+
     def __init__(self, start_x, start_y, ball_radius):
         super().__init__()
         self.radius = ball_radius
         self.color("white")
         self.shape("circle")
         self.penup()
+        self.start_x = start_x
+        self.start_y = start_y
         self.goto(start_x,start_y)
-        self.x_move = -3
-        self.y_move = -3
+        self.x_move = -2
+        self.y_move = -2
 
     @property
     def left_edge(self):
@@ -41,4 +44,7 @@ class Ball(Turtle):
 
     def y_wall_bounce(self):
         self.y_move *= -1
+
+    def reset_position(self):
+        self.goto(self.start_x, self.start_y)
 

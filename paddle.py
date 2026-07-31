@@ -10,6 +10,8 @@ class Paddle(Turtle):
         self.color("white")
         self.shapesize(stretch_wid=self.height/20, stretch_len=self.width/20)
         self.penup()
+        self.start_x = start_x
+        self.start_y = start_y
         self.goto(start_x, start_y)
 
     @property
@@ -33,4 +35,7 @@ class Paddle(Turtle):
 
     def go_right(self):
         self.goto(self.xcor() + 20, self.ycor())
+
+    def reset_position(self):
+        self.goto(self.start_x, self.start_y)
 

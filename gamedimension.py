@@ -1,4 +1,3 @@
-
 class GameDimension:
 
     def __init__(self, width, height):
@@ -11,7 +10,7 @@ class GameDimension:
         self.bottom_wall = -(self.window_height / 2)
 
         self.brick_width = self.window_width / 15
-        self.brick_height = self.window_height / 20   #tohle je jen nastrel, upravim pak podle vizualniho pocitu
+        self.brick_height = self.window_height / 20
 
         self.scale = min(self.window_width, self.window_height)
 
@@ -26,3 +25,13 @@ class GameDimension:
         self.ball_start_x = 0
         self.ball_bottom_margin = self.window_height * 0.4
         self.ball_start_y = (self.bottom_wall + self.ball_bottom_margin)
+
+        self.scoreboard_font_size = max(12, int(self.scale * 0.025))
+        self.scoreboard_top_margin = self.window_height * 0.06
+        self.scoreboard_y = self.top_wall - self.scoreboard_top_margin
+        self.high_score_y = int(self.top_wall - self.scoreboard_top_margin * 1.75)
+        self.x_margin = self.window_width * 0.1
+        self.left_x = self.left_wall + self.x_margin
+        self.right_x = self.right_wall - self.x_margin
+
+
