@@ -23,11 +23,6 @@ paddle = Paddle(dimension.paddle_start_x, dimension.paddle_start_y, dimension.pa
 ball = Ball(dimension.ball_start_x, dimension.ball_start_y, dimension.ball_radius)
 
 screen.listen()
-for key in ["a", "A", "Left"]:
-    screen.onkeypress(paddle.go_left, key)
-
-for key in ["d", "D", "Right"]:
-    screen.onkeypress(paddle.go_right, key)
 
 message = Turtle()
 message.hideturtle()
@@ -53,6 +48,12 @@ def reset_round():
 def game_loop():
     screen.update()
     ball.move()
+
+    for key in ["a", "A", "Left"]:
+        screen.onkeypress(paddle.go_left, key)
+
+    for key in ["d", "D", "Right"]:
+        screen.onkeypress(paddle.go_right, key)
 
     # Detect collision with paddle
     horizontal_hit = (

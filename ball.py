@@ -12,7 +12,7 @@ class Ball(Turtle):
         self.start_y = start_y
         self.goto(start_x,start_y)
         self.x_move = -2
-        self.y_move = -2
+        self.y_move = -3
 
     @property
     def left_edge(self):

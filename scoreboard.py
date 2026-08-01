@@ -27,7 +27,7 @@ class Scoreboard(Turtle):
         self.goto(0, self.high_score_y)
         self.write(f"High score: 0", align="center", font=("Courier", self.font_size, "normal"))
         self.goto(self.scoreboard_right_x, self.scoreboard_y)
-        self.write(f"Lives: {self.lives}", align="right", font=("Courier", self.font_size, "normal"))
+        self.write(f"Lives: {'🤍' * self.lives}", align="right", font=("Courier", self.font_size, "normal"))
 
     def get_current_record(self):
         try:
