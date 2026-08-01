@@ -2,7 +2,7 @@ from turtle import Turtle
 
 class Scoreboard(Turtle):
 
-    def __init__(self, scoreboard_y, font_size, scoreboard_left_x, scoreboard_right_x, high_score_y):
+    def __init__(self, scoreboard_y, font_size, left_x, right_x, high_score_y):
         super().__init__()
         self.color("white")
         self.penup()
@@ -13,8 +13,8 @@ class Scoreboard(Turtle):
         self.level = 1
         self.scoreboard_y = scoreboard_y
         self.high_score_y = high_score_y
-        self.scoreboard_left_x = scoreboard_left_x
-        self.scoreboard_right_x = scoreboard_right_x
+        self.scoreboard_left_x = left_x
+        self.scoreboard_right_x = right_x
         self.font_size = font_size
         self.update_scoreboard()
 
@@ -41,4 +41,3 @@ class Scoreboard(Turtle):
         with open("record.txt", "w") as file:
             file.write(str(self.record))
         self.update_scoreboard()
-

@@ -11,8 +11,8 @@ class Ball(Turtle):
         self.start_x = start_x
         self.start_y = start_y
         self.goto(start_x,start_y)
-        self.x_move = -2
-        self.y_move = -3
+        self.x_move = -1.5
+        self.y_move = -10
 
     @property
     def left_edge(self):
@@ -47,4 +47,3 @@ class Ball(Turtle):
 
     def reset_position(self):
         self.goto(self.start_x, self.start_y)
-

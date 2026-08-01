@@ -38,4 +38,3 @@ class Paddle(Turtle):
 
     def reset_position(self):
         self.goto(self.start_x, self.start_y)
-
