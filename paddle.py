@@ -31,10 +31,10 @@ class Paddle(Turtle):
         return self.ycor() - self.height / 2
 
     def go_left(self):
-        self.goto(self.xcor() - 20, self.ycor())
+        self.goto(self.xcor() - int(0.2 * self.width), self.ycor())
 
     def go_right(self):
-        self.goto(self.xcor() + 20, self.ycor())
+        self.goto(self.xcor() + int(0.2 * self.width), self.ycor())
 
     def reset_position(self):
         self.goto(self.start_x, self.start_y)

@@ -11,8 +11,9 @@ class Ball(Turtle):
         self.start_x = start_x
         self.start_y = start_y
         self.goto(start_x,start_y)
-        self.x_move = -1.5
-        self.y_move = -10
+        self.x_move = -4
+        self.y_move = -7
+        self.paddle_hits = 0
 
     @property
     def left_edge(self):
@@ -34,15 +35,22 @@ class Ball(Turtle):
 
     def paddle_bounce(self, relative_hit):
         self.y_move *= -1
-        if relative_hit <= -0.4:
-            self.x_move = -abs(self.x_move)
-        elif relative_hit >= 0.4:
-            self.x_move = abs(self.x_move)
 
-    def x_wall_bounce(self):
+        if relative_hit <= -0.45:
+            self.x_move = -abs(1.2 * self.x_move)
+        elif relative_hit <= -0.1:
+            self.x_move = -abs(0.9 * self.x_move)
+        elif relative_hit <= 0.1:
+            self.x_move *= -0.8
+        elif relative_hit <= 0.45:
+            self.x_move = abs(0.9 * self.x_move)
+        else:
+            self.x_move = abs(1.2 * self.x_move)
+
+    def x_bounce(self):
         self.x_move *= -1
 
-    def y_wall_bounce(self):
+    def y_bounce(self):
         self.y_move *= -1
 
     def reset_position(self):

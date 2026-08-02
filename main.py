@@ -42,10 +42,16 @@ def countdown():
     message.clear()
 
 def reset_round():
+    ball.x_move = -4
+    ball.y_move = -7
+    ball.paddle_hits = 0
     scoreboard.update_scoreboard()
     ball.reset_position()
     paddle.reset_position()
     countdown()
+
+def next_level():
+    pass
 
 def game_loop():
     screen.update()
@@ -66,16 +72,19 @@ def game_loop():
         offset = ball.xcor() - paddle.xcor()
         relative_hit = offset / (paddle.width/2)
         ball.paddle_bounce(relative_hit)
+        ball.paddle_hits +=1
+        if ball.paddle_hits % 4 == 0:
+            if abs(ball.x_move) <= 12:
+                ball.x_move *= 1.08
+            if abs(ball.y_move) <= 12:
+                ball.y_move *= 1.08
 
     #Detect collision with walls
-    if ball.left_edge <= dimension.left_wall:
-        ball.x_wall_bounce()
-
-    if ball.right_edge >= dimension.right_wall:
-        ball.x_wall_bounce()
+    if ball.left_edge <= dimension.left_wall or ball.right_edge >= dimension.right_wall:
+        ball.x_bounce()
 
     if ball.top_edge >= dimension.top_wall:
-        ball.y_wall_bounce()
+        ball.y_bounce()
 
     # Detect collision with bottom wall
     if ball.top_edge <= dimension.bottom_wall:
@@ -93,10 +102,26 @@ def game_loop():
         horizontal_brick_hit = (ball.right_edge >= brick.left_edge and ball.left_edge <= brick.right_edge)
 
         if vertical_brick_hit and horizontal_brick_hit:
-            print(brick)
+            left_overlap = ball.right_edge - brick.left_edge
+            right_overlap = brick.right_edge - ball.left_edge
+            top_overlap = brick.top_edge - ball.bottom_edge
+            bottom_overlap = ball.top_edge -  brick.bottom_edge
+
+            min_overlap = min(left_overlap, right_overlap, top_overlap, bottom_overlap)
+
+            if min_overlap ==  left_overlap or min_overlap == right_overlap:
+                ball.x_bounce()
+
+            elif min_overlap == top_overlap or min_overlap == bottom_overlap:
+                ball.y_bounce()
+
+            scoreboard.current_score += brick.point
+            scoreboard.update_scoreboard()
             brick.hideturtle()
-            ball.y_wall_bounce()
             brick_manager.bricks.remove(brick)
+            if len(brick_manager.bricks) == 0:
+                pass
+                #next level
             break
 
     screen.ontimer(game_loop, 10)

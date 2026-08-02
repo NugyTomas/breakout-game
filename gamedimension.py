@@ -20,8 +20,8 @@ class GameDimension:
         
         #Paddle
         self.paddle_start_x = 0
-        self.paddle_bottom_margin = self.window_height * 0.08
-        self.paddle_start_y = (self.bottom_wall + self.paddle_bottom_margin)
+        paddle_bottom_margin = self.window_height * 0.08
+        self.paddle_start_y = (self.bottom_wall + paddle_bottom_margin)
         self.paddle_width = scale * 0.24
         self.paddle_height = scale *  0.016
         

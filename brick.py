@@ -2,7 +2,7 @@ from turtle import Turtle
 
 class Brick(Turtle):
 
-    def __init__(self, x, y, width, height, color):
+    def __init__(self, x, y, width, height, color, point):
         super().__init__()
         self.shape("square")
         self.color(color)
@@ -11,6 +11,7 @@ class Brick(Turtle):
         self.shapesize(stretch_wid=self.height/20, stretch_len=self.width/20)
         self.penup()
         self.goto(x,y)
+        self.point = point
 
     @property
     def left_edge(self):
