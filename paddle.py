@@ -1,5 +1,6 @@
 from turtle import Turtle
 
+
 class Paddle(Turtle):
 
     def __init__(self, start_x, start_y, paddle_width, paddle_height):
@@ -8,7 +9,7 @@ class Paddle(Turtle):
         self.height = paddle_height
         self.shape("square")
         self.color("white")
-        self.shapesize(stretch_wid=self.height/20, stretch_len=self.width/20)
+        self.shapesize(stretch_wid=self.height / 20, stretch_len=self.width / 20)
         self.penup()
         self.start_x = start_x
         self.start_y = start_y
@@ -38,3 +39,7 @@ class Paddle(Turtle):
 
     def reset_position(self):
         self.goto(self.start_x, self.start_y)
+
+    def next_level(self):
+        self.width = int(self.width * 0.75)
+        self.shapesize(stretch_wid=self.height/20, stretch_len=self.width/20)

@@ -9,10 +9,10 @@ BRICKS = [
 
 class BrickManager:
 
-    def __init__(self, dimension):
-
+    def __init__(self):
         self.bricks = []
 
+    def build_bricks(self, dimension):
         for row in range(dimension.bricks_rows):
             color_index = (row // 2)
             color, points = BRICKS[color_index]
