@@ -11,8 +11,12 @@ class Ball(Turtle):
         self.start_x = start_x
         self.start_y = start_y
         self.goto(start_x,start_y)
-        self.x_move = -4
-        self.y_move = -7
+        self.start_x_speed = -4
+        self.start_y_speed = -7
+
+        self.x_move = self.start_x_speed
+        self.y_move = self.start_y_speed
+
         self.paddle_hits = 0
 
     @property
@@ -36,16 +40,26 @@ class Ball(Turtle):
     def paddle_bounce(self, relative_hit):
         self.y_move *= -1
 
-        if relative_hit <= -0.45:
-            self.x_move = -abs(1.2 * self.x_move)
-        elif relative_hit <= -0.1:
+        if relative_hit <= -0.7:
+            self.x_move = -abs(1.35 * self.x_move)
+        elif relative_hit <= -0.4:
+            self.x_move = -abs(1.15 * self.x_move)
+        elif relative_hit <= -0.15:
             self.x_move = -abs(0.9 * self.x_move)
-        elif relative_hit <= 0.1:
-            self.x_move *= -0.8
-        elif relative_hit <= 0.45:
+        elif relative_hit <= 0.15:
+            self.x_move *= -0.4
+        elif relative_hit <= 0.4:
             self.x_move = abs(0.9 * self.x_move)
+        elif relative_hit <= 0.7:
+            self.x_move = abs(1.15 * self.x_move)
         else:
-            self.x_move = abs(1.2 * self.x_move)
+            self.x_move = abs(1.35 * self.x_move)
+
+        if abs(self.y_move) < 4:
+            self.y_move = 4 if self.y_move > 0 else -4
+
+        if abs(self.x_move) < 2:
+            self.x_move = 2 if self.x_move > 0 else -2
 
     def x_bounce(self):
         self.x_move *= -1
@@ -53,5 +67,10 @@ class Ball(Turtle):
     def y_bounce(self):
         self.y_move *= -1
 
-    def reset_position(self):
+    def reset(self):
         self.goto(self.start_x, self.start_y)
+
+        self.x_move = self.start_x_speed
+        self.y_move = self.start_y_speed
+
+        self.paddle_hits = 0

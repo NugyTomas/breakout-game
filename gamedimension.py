@@ -61,3 +61,14 @@ class GameDimension:
         self.scoreboard_left_x = self.left_wall + scoreboard_x_margin
         self.scoreboard_right_x = self.right_wall - scoreboard_x_margin
 
+        # Messages
+        self.game_state_y = self.window_height * 0.12
+        self.final_score_y = -self.window_height * 0.03
+        self.retry_y = -self.window_height * 0.16
+        self.countdown_y = self.window_height * -0.05
+
+        self.game_state_font = int(self.scoreboard_font_size * 2.4)
+        self.final_score_font = int(self.scoreboard_font_size * 1.2)
+        self.retry_font = int(self.scoreboard_font_size * 1.1)
+        self.countdown_font = int(self.scoreboard_font_size * 3)
+

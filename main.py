@@ -11,22 +11,29 @@ def countdown():
 
     counting = True
 
-    message.goto(0, dimension.message_y)
     for number in (3, 2, 1):
         message.clear()
-        message.write(str(number), align="center", font=("Courier", int(dimension.scoreboard_font_size * 3), "bold"))
+        show_message(str(number),dimension.countdown_y,dimension.countdown_font)
+
         screen.update()
         time.sleep(1)
 
     message.clear()
+    screen.update()
+
     counting = False
 
+def show_message(text, y, size, style="bold"):
+    message.goto(0, y)
+    message.write(
+        text,
+        align="center",
+        font=("Courier", size, style)
+    )
+
 def reset_round():
-    ball.x_move = -4
-    ball.y_move = -7
-    ball.paddle_hits = 0
+    ball.reset()
     scoreboard.update_scoreboard()
-    ball.reset_position()
     paddle.reset_position()
     countdown()
 
@@ -43,7 +50,7 @@ def toggle_pause():
 
     if game_paused:
         message.clear()
-        message.write("PAUSED", align="center", font=("Courier", int(dimension.scoreboard_font_size * 3), "bold"))
+        show_message("⏸ PAUSED",dimension.game_state_y,dimension.game_state_font,)
     else:
         message.clear()
 
@@ -64,11 +71,11 @@ def game_loop():
         relative_hit = offset / (paddle.width / 2)
         ball.paddle_bounce(relative_hit)
         ball.paddle_hits += 1
-        if ball.paddle_hits % 4 == 0:
-            if abs(ball.x_move) <= 12:
-                ball.x_move *= 1.08
-            if abs(ball.y_move) <= 12:
-                ball.y_move *= 1.08
+        if ball.paddle_hits % 3 == 0:
+            if abs(ball.x_move) <= 10:
+                ball.x_move *= 1.05
+            if abs(ball.y_move) <= 11:
+                ball.y_move *= 1.05
 
     # Detect collision with walls
     if ball.left_edge <= dimension.left_wall or ball.right_edge >= dimension.right_wall:
@@ -88,28 +95,17 @@ def game_loop():
             message.clear()
 
             # GAME OVER
-            message.goto(0, 80)
-            message.write(
-                "★ GAME OVER ★",
-                align="center",
-                font=("Courier", int(dimension.scoreboard_font_size * 2.4), "bold"),
-            )
+            show_message("★ GAME OVER ★",dimension.game_state_y,dimension.game_state_font)
 
-            # Scores
-            message.goto(0, -30)
-            message.write(
+            show_message(
                 f"Final Score: {scoreboard.current_score}\n"
                 f"High Score: {max(scoreboard.current_score, scoreboard.record)}",
-                align="center",
-                font=("Courier", int(dimension.scoreboard_font_size * 1.1), "normal"),
+                dimension.final_score_y,
+                dimension.final_score_font,
+                "normal"
             )
 
-            # Controls
-            message.goto(0, -110)
-            message.write(
-                "[Y] Play Again\n[N] Exit",
-                align="center",
-                font=("Courier", int(dimension.scoreboard_font_size * 1.2), "bold"),)
+            show_message("[Y] Play Again\n[N] Exit",dimension.retry_y ,dimension.retry_font)
 
             if scoreboard.current_score > scoreboard.record:
                 scoreboard.write_new_record()
@@ -131,9 +127,11 @@ def game_loop():
 
             if min_overlap == left_overlap or min_overlap == right_overlap:
                 ball.x_bounce()
+                ball.setx(ball.xcor() + ball.x_move)
 
             elif min_overlap == top_overlap or min_overlap == bottom_overlap:
                 ball.y_bounce()
+                ball.sety(ball.ycor() + ball.y_move)
 
             scoreboard.current_score += brick.point
             scoreboard.update_scoreboard()
