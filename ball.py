@@ -1,16 +1,21 @@
 from turtle import Turtle
 
+HARD_HIT_MULTIPLIER = 1.35
+MEDIUM_HIT_MULTIPLIER = 1.15
+SOFT_HIT_MULTIPLIER = 0.9
+CENTER_HIT_MULTIPLIER = 0.4
+
 class Ball(Turtle):
 
-    def __init__(self, start_x, start_y, ball_radius):
+    def __init__(self, dimension):
         super().__init__()
-        self.radius = ball_radius
+        self.radius = dimension.ball_radius
         self.color("white")
         self.shape("circle")
         self.penup()
-        self.start_x = start_x
-        self.start_y = start_y
-        self.goto(start_x,start_y)
+        self.start_x = dimension.ball_start_x
+        self.start_y = dimension.ball_start_y
+        self.goto(self.start_x,self.start_y)
         self.start_x_speed = -4
         self.start_y_speed = -7
 
@@ -22,12 +27,15 @@ class Ball(Turtle):
     @property
     def left_edge(self):
         return self.xcor() - self.radius
+
     @property
     def right_edge(self):
         return self.xcor() + self.radius
+
     @property
     def top_edge(self):
         return self.ycor() + self.radius
+
     @property
     def bottom_edge(self):
         return self.ycor() - self.radius
@@ -41,19 +49,19 @@ class Ball(Turtle):
         self.y_move *= -1
 
         if relative_hit <= -0.7:
-            self.x_move = -abs(1.35 * self.x_move)
+            self.x_move = -abs(HARD_HIT_MULTIPLIER * self.x_move)
         elif relative_hit <= -0.4:
-            self.x_move = -abs(1.15 * self.x_move)
+            self.x_move = -abs(MEDIUM_HIT_MULTIPLIER * self.x_move)
         elif relative_hit <= -0.15:
-            self.x_move = -abs(0.9 * self.x_move)
+            self.x_move = -abs(SOFT_HIT_MULTIPLIER * self.x_move)
         elif relative_hit <= 0.15:
-            self.x_move *= -0.4
+            self.x_move *= -CENTER_HIT_MULTIPLIER
         elif relative_hit <= 0.4:
-            self.x_move = abs(0.9 * self.x_move)
+            self.x_move = abs(SOFT_HIT_MULTIPLIER * self.x_move)
         elif relative_hit <= 0.7:
-            self.x_move = abs(1.15 * self.x_move)
+            self.x_move = abs(MEDIUM_HIT_MULTIPLIER * self.x_move)
         else:
-            self.x_move = abs(1.35 * self.x_move)
+            self.x_move = abs(HARD_HIT_MULTIPLIER * self.x_move)
 
         if abs(self.y_move) < 4:
             self.y_move = 4 if self.y_move > 0 else -4

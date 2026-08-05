@@ -6,6 +6,17 @@ from gamedimension import GameDimension
 from paddle import Paddle
 from scoreboard import Scoreboard
 
+# -----------------------------------------------------
+# Globals
+# -----------------------------------------------------
+
+game_paused = False
+counting = False
+
+# -----------------------------------------------------
+# Helper functions
+# -----------------------------------------------------
+
 def countdown():
     global counting
 
@@ -37,38 +48,18 @@ def reset_round():
     paddle.reset_position()
     countdown()
 
-def toggle_pause():
-    global game_paused
+# -----------------------------------------------------
+# Collision detection
+# -----------------------------------------------------
 
-    if scoreboard.lives == 0:
-        return
-
-    if counting:
-        return
-
-    game_paused = not game_paused
-
-    if game_paused:
-        message.clear()
-        show_message("⏸ PAUSED",dimension.game_state_y,dimension.game_state_font,)
-    else:
-        message.clear()
-
-def game_loop():
-    if game_paused:
-        screen.ontimer(game_loop, 10)
-        return
-
-    screen.update()
-    ball.move()
-
-    # Detect collision with paddle
-    horizontal_paddle_hit = (ball.right_edge >= paddle.left_edge and ball.left_edge <= paddle.right_edge)
-    vertical_paddle_hit = (ball.bottom_edge <= paddle.top_edge and ball.top_edge >= paddle.bottom_edge)
+def detect_paddle_collision():
+    horizontal_paddle_hit = ball.right_edge >= paddle.left_edge and ball.left_edge <= paddle.right_edge
+    vertical_paddle_hit = ball.bottom_edge <= paddle.top_edge and ball.top_edge >= paddle.bottom_edge
 
     if ball.y_move < 0 and horizontal_paddle_hit and vertical_paddle_hit:
-        offset = ball.xcor() - paddle.xcor()
-        relative_hit = offset / (paddle.width / 2)
+        
+        hit_offset = ball.xcor() - paddle.xcor()
+        relative_hit = hit_offset / (paddle.width / 2)
         ball.paddle_bounce(relative_hit)
         ball.paddle_hits += 1
         if ball.paddle_hits % 3 == 0:
@@ -77,14 +68,14 @@ def game_loop():
             if abs(ball.y_move) <= 11:
                 ball.y_move *= 1.05
 
-    # Detect collision with walls
+def detect_wall_collisions():
     if ball.left_edge <= dimension.left_wall or ball.right_edge >= dimension.right_wall:
         ball.x_bounce()
 
     if ball.top_edge >= dimension.top_wall:
         ball.y_bounce()
 
-    # Detect collision with bottom wall
+def check_bottom_collision():
     if ball.top_edge <= dimension.bottom_wall:
         scoreboard.lives -= 1
 
@@ -112,7 +103,7 @@ def game_loop():
 
             return
 
-    # Detect collision with bricks
+def detect_brick_collision():
     for brick in brick_manager.bricks:
         vertical_brick_hit = (ball.top_edge >= brick.bottom_edge and ball.bottom_edge <= brick.top_edge)
         horizontal_brick_hit = (ball.right_edge >= brick.left_edge and ball.left_edge <= brick.right_edge)
@@ -146,7 +137,26 @@ def game_loop():
 
             break
 
-    screen.ontimer(game_loop, 10)
+# -----------------------------------------------------
+# Game logic
+# -----------------------------------------------------
+
+def toggle_pause():
+    global game_paused
+
+    if scoreboard.lives == 0:
+        return
+
+    if counting:
+        return
+
+    game_paused = not game_paused
+
+    if game_paused:
+        message.clear()
+        show_message("⏸ PAUSED",dimension.game_state_y,dimension.game_state_font,)
+    else:
+        message.clear()
 
 def retry_game():
     if scoreboard.lives > 0:
@@ -171,9 +181,25 @@ def exit_game():
         return
     screen.bye()
 
-# GLOBALS
-game_paused = False
-counting = False
+def game_loop():
+    if game_paused:
+        screen.ontimer(game_loop, 10)
+        return
+
+    screen.update()
+
+    ball.move()
+
+    detect_paddle_collision()
+    detect_wall_collisions()
+    check_bottom_collision()
+    detect_brick_collision()
+
+    screen.ontimer(game_loop, 10)
+
+# -----------------------------------------------------
+# Game initialization
+# -----------------------------------------------------
 
 screen = Screen()
 screen.bgcolor("black")
@@ -188,12 +214,16 @@ screen.setup(width=dimension.window_width, height=dimension.window_height)
 screen.cv._rootwindow.resizable(False, False)
 screen.tracer(0)
 
-scoreboard = Scoreboard(dimension.scoreboard_y, dimension.scoreboard_font_size, dimension.scoreboard_left_x,
-                        dimension.scoreboard_right_x, dimension.high_score_y)
-paddle = Paddle(dimension.paddle_start_x, dimension.paddle_start_y, dimension.paddle_width, dimension.paddle_height)
-ball = Ball(dimension.ball_start_x, dimension.ball_start_y, dimension.ball_radius)
+scoreboard = Scoreboard(dimension)
+paddle = Paddle(dimension)
+ball = Ball(dimension)
+
 brick_manager = BrickManager()
 brick_manager.build_bricks(dimension)
+
+# -----------------------------------------------------
+# Controls
+# -----------------------------------------------------
 
 screen.listen()
 
@@ -212,11 +242,21 @@ for key in ["y", "Y"]:
 for key in ["n", "N"]:
     screen.onkeypress(exit_game, key)
 
+
+# -----------------------------------------------------
+# Message turtle
+# -----------------------------------------------------
+
 message = Turtle()
 message.hideturtle()
 message.penup()
 message.color("white")
 
+# -----------------------------------------------------
+# Game
+# -----------------------------------------------------
+
 countdown()
 game_loop()
+
 screen.mainloop()

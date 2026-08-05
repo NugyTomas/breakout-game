@@ -1,11 +1,11 @@
 from brick import Brick
 
-BRICKS = [
+BRICKS = (
     ("yellow", 7),
     ("green", 5),
     ("blue", 3),
     ("purple", 1),
-]
+)
 
 class BrickManager:
 

@@ -3,17 +3,17 @@ from turtle import Turtle
 
 class Paddle(Turtle):
 
-    def __init__(self, start_x, start_y, paddle_width, paddle_height):
+    def __init__(self, dimension):
         super().__init__()
-        self.width = paddle_width
-        self.height = paddle_height
+        self.width = dimension.paddle_width
+        self.height = dimension.paddle_height
         self.shape("square")
         self.color("white")
         self.shapesize(stretch_wid=self.height / 20, stretch_len=self.width / 20)
         self.penup()
-        self.start_x = start_x
-        self.start_y = start_y
-        self.goto(start_x, start_y)
+        self.start_x = dimension.paddle_start_x
+        self.start_y = dimension.paddle_start_y
+        self.goto(self.start_x, self.start_y)
 
     @property
     def left_edge(self):

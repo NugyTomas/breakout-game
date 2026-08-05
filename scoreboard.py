@@ -2,7 +2,7 @@ from turtle import Turtle
 
 class Scoreboard(Turtle):
 
-    def __init__(self, scoreboard_y, font_size, left_x, right_x, high_score_y):
+    def __init__(self, dimension):
         super().__init__()
         self.color("white")
         self.penup()
@@ -13,11 +13,11 @@ class Scoreboard(Turtle):
         self.lives = 3
         self.level = 1
 
-        self.scoreboard_y = scoreboard_y
-        self.high_score_y = high_score_y
-        self.scoreboard_left_x = left_x
-        self.scoreboard_right_x = right_x
-        self.font_size = font_size
+        self.scoreboard_y = dimension.scoreboard_y
+        self.high_score_y = dimension.high_score_y
+        self.scoreboard_left_x = dimension.scoreboard_left_x
+        self.scoreboard_right_x = dimension.scoreboard_right_x
+        self.font_size = dimension.scoreboard_font_size
 
         self.update_scoreboard()
 
