@@ -1,5 +1,8 @@
 from turtle import Turtle
 
+MIN_X_SPEED = 2
+MIN_Y_SPEED = 4
+
 HARD_HIT_MULTIPLIER = 1.35
 MEDIUM_HIT_MULTIPLIER = 1.15
 SOFT_HIT_MULTIPLIER = 0.9
@@ -63,11 +66,11 @@ class Ball(Turtle):
         else:
             self.x_move = abs(HARD_HIT_MULTIPLIER * self.x_move)
 
-        if abs(self.y_move) < 4:
-            self.y_move = 4 if self.y_move > 0 else -4
+        if abs(self.x_move) < MIN_X_SPEED:
+            self.x_move = MIN_X_SPEED if self.x_move > 0 else -MIN_X_SPEED
 
-        if abs(self.x_move) < 2:
-            self.x_move = 2 if self.x_move > 0 else -2
+        if abs(self.y_move) < MIN_Y_SPEED:
+            self.y_move = MIN_Y_SPEED if self.y_move > 0 else -MIN_Y_SPEED
 
     def x_bounce(self):
         self.x_move *= -1

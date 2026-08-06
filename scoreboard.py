@@ -52,3 +52,10 @@ class Scoreboard(Turtle):
                 return int(file.read())
         except FileNotFoundError:
             return 0
+
+    def reset(self):
+        self.current_score = 0
+        self.level = 1
+        self.lives = 3
+        self.record = self.get_current_record()
+        self.update_scoreboard()

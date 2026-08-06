@@ -81,27 +81,29 @@ def check_bottom_collision():
 
         if scoreboard.lives > 0:
             reset_round()
+            return False
 
-        else:
-            message.clear()
+        message.clear()
 
-            # GAME OVER
-            show_message("★ GAME OVER ★",dimension.game_state_y,dimension.game_state_font)
+        # GAME OVER
+        show_message("★ GAME OVER ★",dimension.game_state_y,dimension.game_state_font)
 
-            show_message(
-                f"Final Score: {scoreboard.current_score}\n"
-                f"High Score: {max(scoreboard.current_score, scoreboard.record)}",
-                dimension.final_score_y,
-                dimension.final_score_font,
-                "normal"
+        show_message(
+            f"Final Score: {scoreboard.current_score}\n"
+            f"High Score: {max(scoreboard.current_score, scoreboard.record)}",
+            dimension.final_score_y,
+            dimension.final_score_font,
+            "normal"
             )
 
-            show_message("[Y] Play Again\n[N] Exit",dimension.retry_y ,dimension.retry_font)
+        show_message("[Y] Play Again\n[N] Exit",dimension.retry_y ,dimension.retry_font)
 
-            if scoreboard.current_score > scoreboard.record:
-                scoreboard.write_new_record()
+        if scoreboard.current_score > scoreboard.record:
+            scoreboard.write_new_record()
 
-            return
+        return True
+
+    return False
 
 def detect_brick_collision():
     for brick in brick_manager.bricks:
@@ -116,11 +118,11 @@ def detect_brick_collision():
 
             min_overlap = min(left_overlap, right_overlap, top_overlap, bottom_overlap)
 
-            if min_overlap == left_overlap or min_overlap == right_overlap:
+            if min_overlap in (left_overlap, right_overlap):
                 ball.x_bounce()
                 ball.setx(ball.xcor() + ball.x_move)
 
-            elif min_overlap == top_overlap or min_overlap == bottom_overlap:
+            elif min_overlap in (top_overlap, bottom_overlap):
                 ball.y_bounce()
                 ball.sety(ball.ycor() + ball.y_move)
 
@@ -129,7 +131,7 @@ def detect_brick_collision():
             brick.hideturtle()
             brick_manager.bricks.remove(brick)
 
-            if len(brick_manager.bricks) == 0:
+            if not brick_manager.bricks:
                 paddle.next_level()
                 scoreboard.level += 1
                 brick_manager.build_bricks(dimension)
@@ -144,10 +146,7 @@ def detect_brick_collision():
 def toggle_pause():
     global game_paused
 
-    if scoreboard.lives == 0:
-        return
-
-    if counting:
+    if scoreboard.lives == 0 or counting:
         return
 
     game_paused = not game_paused
@@ -162,10 +161,7 @@ def retry_game():
     if scoreboard.lives > 0:
         return
 
-    scoreboard.current_score = 0
-    scoreboard.level = 1
-    scoreboard.lives = 3
-    scoreboard.record = scoreboard.get_current_record()
+    scoreboard.reset()
 
     for brick in brick_manager.bricks:
         brick.hideturtle()
@@ -192,7 +188,10 @@ def game_loop():
 
     detect_paddle_collision()
     detect_wall_collisions()
-    check_bottom_collision()
+
+    if check_bottom_collision():
+        return
+
     detect_brick_collision()
 
     screen.ontimer(game_loop, 10)
