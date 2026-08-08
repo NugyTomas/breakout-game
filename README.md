@@ -45,7 +45,7 @@ A classic Breakout-style desktop game built with Python and Turtle, featuring pa
 Clone the repository:
 
 ```bash
-git clone https://github.com/NugyTomas/breakout.git
+git clone https://github.com/NugyTomas/breakout-game.git
 ```
 Install dependencies:
 
