@@ -63,12 +63,12 @@ python main.py
 
 ### Countdown
 
-![Countdown](screenshots/countdown.PNG)
+![Countdown](screenshots/countdown.png)
 
 ### Pause
 
-![Pause](screenshots/pause.PNG)
+![Pause](screenshots/pause.png)
 
 ### Game over
 
-![Game over](screenshots/game_over.PNG)
+![Game over](screenshots/game_over.png)
