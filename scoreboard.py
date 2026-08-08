@@ -37,7 +37,6 @@ class Scoreboard(Turtle):
         self.write(f"Lives: {'🤍' * self.lives}", align="right", font=("Courier", self.font_size, "normal"))
 
     def write_new_record(self):
-
         self.record = self.current_score
 
         with open("record.txt", "w") as file:

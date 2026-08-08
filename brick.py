@@ -13,6 +13,7 @@ class Brick(Turtle):
         self.goto(x,y)
         self.point = point
 
+    # Edges
     @property
     def left_edge(self):
         return self.xcor() - self.width / 2
@@ -28,3 +29,8 @@ class Brick(Turtle):
     @property
     def bottom_edge(self):
         return self.ycor() - self.height / 2
+
+
+
+
+

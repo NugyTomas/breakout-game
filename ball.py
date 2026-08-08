@@ -1,7 +1,11 @@
 from turtle import Turtle
 
+# Constants
 MIN_X_SPEED = 2
 MIN_Y_SPEED = 4
+
+MAX_X_SPEED = 10
+MAX_Y_SPEED = 11
 
 HARD_HIT_MULTIPLIER = 1.35
 MEDIUM_HIT_MULTIPLIER = 1.15
@@ -27,6 +31,7 @@ class Ball(Turtle):
 
         self.paddle_hits = 0
 
+    # Edges
     @property
     def left_edge(self):
         return self.xcor() - self.radius
@@ -46,7 +51,22 @@ class Ball(Turtle):
     def move(self):
         new_x = self.xcor() + self.x_move
         new_y = self.ycor() + self.y_move
-        self.goto(new_x,new_y)
+        self.goto(new_x, new_y)
+
+    def limit_speed(self):
+        # Minimum speed
+        if abs(self.x_move) < MIN_X_SPEED:
+            self.x_move = MIN_X_SPEED if self.x_move > 0 else -MIN_X_SPEED
+
+        if abs(self.y_move) < MIN_Y_SPEED:
+            self.y_move = MIN_Y_SPEED if self.y_move > 0 else -MIN_Y_SPEED
+
+        # Maximum speed
+        if abs(self.x_move) > MAX_X_SPEED:
+            self.x_move = MAX_X_SPEED if self.x_move > 0 else -MAX_X_SPEED
+
+        if abs(self.y_move) > MAX_Y_SPEED:
+            self.y_move = MAX_Y_SPEED if self.y_move > 0 else -MAX_Y_SPEED
 
     def paddle_bounce(self, relative_hit):
         self.y_move *= -1
@@ -66,11 +86,8 @@ class Ball(Turtle):
         else:
             self.x_move = abs(HARD_HIT_MULTIPLIER * self.x_move)
 
-        if abs(self.x_move) < MIN_X_SPEED:
-            self.x_move = MIN_X_SPEED if self.x_move > 0 else -MIN_X_SPEED
+        self.limit_speed()
 
-        if abs(self.y_move) < MIN_Y_SPEED:
-            self.y_move = MIN_Y_SPEED if self.y_move > 0 else -MIN_Y_SPEED
 
     def x_bounce(self):
         self.x_move *= -1

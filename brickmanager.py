@@ -14,7 +14,7 @@ class BrickManager:
 
     def build_bricks(self, dimension):
         for row in range(dimension.bricks_rows):
-            color_index = (row // 2)
+            color_index = row // 2
             color, points = BRICKS[color_index]
             for col in range(dimension.bricks_cols):
                 x = dimension.brick_left_x + (dimension.brick_width + dimension.brick_spacing) * col
@@ -22,4 +22,8 @@ class BrickManager:
                 brick = Brick(x,y,dimension.brick_width,dimension.brick_height, color, points)
                 self.bricks.append(brick)
 
+    def clear(self):
+        for brick in self.bricks:
+            brick.hideturtle()
 
+        self.bricks.clear()
